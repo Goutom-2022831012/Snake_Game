@@ -105,23 +105,21 @@ int main(int argc,char* args[]){
         return -1;
     }
 
- SDL_Texture* backgroundTextureIntro = loadTexture("intro_background.bmp", renderer); 
-    SDL_Texture* backgroundTextureGameOver = loadTexture("game_over_background.bmp", renderer);
-    SDL_Texture* backgroundTextureGame = loadTexture("background.bmp", renderer); 
-    SDL_Texture* photoTexture = loadTexture("frog.png", renderer);
-    SDL_Texture* snakeHeadTexture = loadTexture("image.png", renderer); 
-
-    if (!backgroundTextureIntro || !backgroundTextureGameOver || !backgroundTextureGame || !photoTexture || !snakeHeadTexture ) {
+SDL_Texture* backgroundTextureIntro = loadTexture("intro_background.bmp", renderer); 
+SDL_Texture* backgroundTextureGameOver = loadTexture("game_over_background.bmp", renderer);
+SDL_Texture* backgroundTextureGame = loadTexture("background.bmp", renderer); 
+SDL_Texture* photoTexture = loadTexture("frog.png", renderer);
+SDL_Texture* snakeHeadTexture = loadTexture("image.png", renderer); 
+if (!backgroundTextureIntro || !backgroundTextureGameOver || !backgroundTextureGame || !photoTexture || !snakeHeadTexture ) {
         cout << "Failed to load textures!" << endl;
         return -1;
     }
- 
-backgroundMusic = Mix_LoadMUS("background.mp3");
+ backgroundMusic = Mix_LoadMUS("background.mp3");
     if (backgroundMusic == nullptr) {
         cout << "Failed to load background music! SDL_mixer Error: " << Mix_GetError() << endl;
         return -1;
     }
-    Mix_PlayMusic(backgroundMusic, -1);
+Mix_PlayMusic(backgroundMusic, -1);
 vector<snakeSegment>snake;
 direction dir = RIGHT; 
 int photoX, photoY;
@@ -241,11 +239,11 @@ if (checkCollisionWithWall(snake[0], SCREEN_WIDTH, SCREEN_HEIGHT)) {
 SDL_RenderClear(renderer);
 renderTexture(renderer, backgroundTextureGame, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
 renderSnake(renderer, snake, snakeHeadTexture); 
-            if (!atePhoto) {
-                 renderTexture(renderer, photoTexture, photoX, photoY, SNAKE_SIZE, SNAKE_SIZE);
+if (!atePhoto) {
+ renderTexture(renderer, photoTexture, photoX, photoY, SNAKE_SIZE, SNAKE_SIZE);
                 }
-                renderText(renderer, font, "Score: " + to_string(score), 10, 10); 
-                SDL_RenderPresent(renderer);
+    renderText(renderer, font, "Score: " + to_string(score), 10, 10); 
+    SDL_RenderPresent(renderer);
             }
      }                
 }

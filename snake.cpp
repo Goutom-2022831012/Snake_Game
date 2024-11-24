@@ -2,7 +2,7 @@
 void renderSnake(SDL_Renderer* renderer,const vector<snakeSegment>&snake,SDL_Texture* headTexture){
 SDL_Rect headRect = {snake[0].x ,snake[0].y ,SNAKE_SIZE,SNAKE_SIZE};
 SDL_RenderCopy(renderer,headTexture,nullptr,&headRect);
-SDL_SetRenderDrawColor(renderer,200,250,100,255);
+SDL_SetRenderDrawColor(renderer,200,250,100,255);//one kind of light green
 for(size_t i=1;i<snake.size();i++) {
     SDL_Rect tailRect = {snake[i].x,snake[i].y,SNAKE_SIZE,SNAKE_SIZE};
     SDL_RenderFillRect(renderer,&tailRect);
