@@ -1,4 +1,4 @@
-#include<snake.h>
+#include"snake.h"
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 600;
 const int INITIAL_SNAKE_LENGTH = 3;
@@ -109,7 +109,7 @@ int main(int argc,char* args[]){
     SDL_Texture* backgroundTextureGameOver = loadTexture("game_over_background.bmp", renderer);
     SDL_Texture* backgroundTextureGame = loadTexture("background.bmp", renderer); 
     SDL_Texture* photoTexture = loadTexture("frog.png", renderer);
-    SDL_Texture* snakeHeadTexture = loadTexture("snake.png", renderer); 
+    SDL_Texture* snakeHeadTexture = loadTexture("image.png", renderer); 
 
     if (!backgroundTextureIntro || !backgroundTextureGameOver || !backgroundTextureGame || !photoTexture || !snakeHeadTexture ) {
         cout << "Failed to load textures!" << endl;
@@ -190,8 +190,7 @@ else if (gameState == GAME_OVER) {
          }
              }      
                }
-                  }
-                      }  
+                  }  
 if (gameState == INTRO) {
             SDL_RenderClear(renderer);
             renderTexture(renderer, backgroundTextureIntro, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -220,7 +219,7 @@ else if (gameState == GAME_OVER) {
 else if (gameState==PLAYING){
     Uint32 currentTime = SDL_GetTicks();
     if(currentTime-startTime>snakeSpeed){
-        currentTime = startTime;
+        startTime = currentTime;
         moveSnake(snake,dir);
  // Check collision with the frog
 bool atePhoto = false;
@@ -239,18 +238,17 @@ if (checkCollisionWithWall(snake[0], SCREEN_WIDTH, SCREEN_HEIGHT)) {
               cout << "Collision with wall detected! Game over." << endl;
             gameState = GAME_OVER;
                 }
-  SDL_RenderClear(renderer);
-                renderTexture(renderer, backgroundTextureGame, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
-                renderSnake(renderer, snake, snakeHeadTexture); 
-                if (!atePhoto) {
-                    renderTexture(renderer, photoTexture, photoX, photoY, SNAKE_SIZE, SNAKE_SIZE);
+SDL_RenderClear(renderer);
+renderTexture(renderer, backgroundTextureGame, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
+renderSnake(renderer, snake, snakeHeadTexture); 
+            if (!atePhoto) {
+                 renderTexture(renderer, photoTexture, photoX, photoY, SNAKE_SIZE, SNAKE_SIZE);
                 }
                 renderText(renderer, font, "Score: " + to_string(score), 10, 10); 
                 SDL_RenderPresent(renderer);
             }
      }                
-
-    
+}
 SDL_DestroyTexture(backgroundTextureIntro);
     SDL_DestroyTexture(backgroundTextureGameOver);
     SDL_DestroyTexture(backgroundTextureGame);

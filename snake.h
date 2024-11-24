@@ -1,3 +1,4 @@
+#pragma once
 #include<bits/stdc++.h>
 #include<SDL.h>
 #include<SDL_image.h>
@@ -12,7 +13,7 @@ struct snakeSegment{
 };
 //function declaration
 void renderSnake(SDL_Renderer* renderer,const vector<snakeSegment>&snake,SDL_Texture* headTexture);
-void moveSnake(const vector<snakeSegment>&snake,direction dir);
+void moveSnake( vector<snakeSegment>&snake,direction dir);
 bool checkCollisionWithSelf(const vector<snakeSegment>&snake);
 bool checkCollisionWithWall(const snakeSegment &head,int screenWidth,int screenHight);
 
