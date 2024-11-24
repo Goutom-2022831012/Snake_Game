@@ -99,7 +99,7 @@ int main(int argc,char* args[]){
     SDL_Window* window=nullptr;
     SDL_Renderer* renderer = nullptr;
     TTF_Font* font = nullptr;
-    Mix_Music* backGroundMusic = nullptr;
+    Mix_Music* backgroundMusic = nullptr;
     if(!init(&window,&renderer,&font)){
          cout << "Failed to initialize!" << endl;
         return -1;
@@ -115,4 +115,14 @@ int main(int argc,char* args[]){
         cout << "Failed to load textures!" << endl;
         return -1;
     }
-}    
+ 
+backgroundMusic = Mix_LoadMUS("background.mp3");
+    if (backgroundMusic == nullptr) {
+        cout << "Failed to load background music! SDL_mixer Error: " << Mix_GetError() << endl;
+        return -1;
+    }
+    Mix_PlayMusic(backgroundMusic, -1);
+
+
+
+}
