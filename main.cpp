@@ -53,7 +53,7 @@ void renderTexture(SDL_Renderer* renderer,SDL_Texture* newTexture,int x ,int y,i
     SDL_Rect imageRect ={x,y,w,h};
     SDL_RenderCopy(renderer,newTexture,nullptr,&imageRect);
 }
-void renderText(SDL_Renderer* renderer,TTF_Font* font,string &text,int x,int y){
+void renderText(SDL_Renderer* renderer,TTF_Font* font,const string &text,int x,int y){
     SDL_Color textColor ={0,0,0};
     SDL_Surface* newSurface = TTF_RenderText_Solid(font,text.c_str(),textColor);
     if (newSurface== nullptr) {
@@ -192,7 +192,32 @@ else if (gameState == GAME_OVER) {
                }
                   }
                       }  
-
+if (gameState == INTRO) {
+            SDL_RenderClear(renderer);
+            renderTexture(renderer, backgroundTextureIntro, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            renderText(renderer, font, "Press Enter to start the game", SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 - 50);
+            renderText(renderer, font, "Instructions: Use arrow keys to move", SCREEN_WIDTH / 2 - 400, SCREEN_HEIGHT / 2);
+            renderText(renderer, font, "Eat the frog to grow, avoid walls and yourself", SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 + 50);
+            SDL_RenderPresent(renderer);
+        } 
+else if (gameState == SELECT_DIFFICULTY) {
+            SDL_RenderClear(renderer);
+            renderTexture(renderer, backgroundTextureIntro, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            renderText(renderer, font, "Select Difficulty:", SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 100);
+            renderText(renderer, font, "1. Easy", SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2 - 50);
+            renderText(renderer, font, "2. Medium", SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2);
+            renderText(renderer, font, "3. Hard", SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2 + 50);
+            SDL_RenderPresent(renderer);
+        } 
+else if (gameState == GAME_OVER) {
+            SDL_RenderClear(renderer);
+            renderTexture(renderer, backgroundTextureGameOver, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            renderText(renderer, font, "Game Over", SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 50);
+            renderText(renderer, font, "Final Score: " + to_string(score), SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2);
+            renderText(renderer, font, "Press R to replay or C to close", SCREEN_WIDTH / 2 - 400, SCREEN_HEIGHT / 2 + 50);
+            SDL_RenderPresent(renderer);
+        }
+    
 
 
 }
