@@ -34,7 +34,7 @@ bool init( SDL_Window** window,SDL_Renderer** renderer,TTF_Font** font){
     }
     return true;
 }
-SDL_Texture* loadTexture(string &path,SDL_Renderer* renderer){
+SDL_Texture* loadTexture(const string &path,SDL_Renderer* renderer){
 SDL_Texture* newTexture = nullptr;
 SDL_Surface* newSurface = IMG_Load(path.c_str());
 if(newSurface==nullptr){
@@ -94,3 +94,25 @@ void resetGame(vector<snakeSegment>& snake, direction& dir, int& photoX, int& ph
     generateRandomPosition(photoX, photoY);
     score = 0;
 }
+int main(int argc,char* args[]){
+    srand(static_cast<unsigned>(time(nullptr)));
+    SDL_Window* window=nullptr;
+    SDL_Renderer* renderer = nullptr;
+    TTF_Font* font = nullptr;
+    Mix_Music* backGroundMusic = nullptr;
+    if(!init(&window,&renderer,&font)){
+         cout << "Failed to initialize!" << endl;
+        return -1;
+    }
+
+ SDL_Texture* backgroundTextureIntro = loadTexture("intro_background.bmp", renderer); 
+    SDL_Texture* backgroundTextureGameOver = loadTexture("game_over_background.bmp", renderer);
+    SDL_Texture* backgroundTextureGame = loadTexture("background.bmp", renderer); 
+    SDL_Texture* photoTexture = loadTexture("frog.png", renderer);
+    SDL_Texture* snakeHeadTexture = loadTexture("snake.png", renderer); 
+
+    if (!backgroundTextureIntro || !backgroundTextureGameOver || !backgroundTextureGame || !photoTexture || !snakeHeadTexture ) {
+        cout << "Failed to load textures!" << endl;
+        return -1;
+    }
+}    
