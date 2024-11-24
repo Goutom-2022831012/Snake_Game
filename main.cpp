@@ -122,6 +122,76 @@ backgroundMusic = Mix_LoadMUS("background.mp3");
         return -1;
     }
     Mix_PlayMusic(backgroundMusic, -1);
+vector<snakeSegment>snake;
+direction dir = RIGHT; 
+int photoX, photoY;
+generateRandomPosition(photoX, photoY);
+int score = 0; 
+Uint32 startTime = SDL_GetTicks();
+gameState gameState = INTRO;
+int snakeSpeed;
+bool quit = false;
+SDL_Event e;
+while (!quit) {
+    while (SDL_PollEvent(&e) != 0) {
+     if (e.type == SDL_QUIT) {
+        quit = true;
+        cout<<"Game Quit"<<endl;
+        }
+else if (e.type == SDL_KEYDOWN) {
+ if (gameState == INTRO) {
+        if (e.key.keysym.sym == SDLK_RETURN) {
+              gameState = SELECT_DIFFICULTY; }// Move to difficulty selection
+                cout<<"Selecet Difficulty"<<endl;
+                 } 
+else if (gameState == SELECT_DIFFICULTY) {                 
+ switch (e.key.keysym.sym) {
+             case SDLK_1: // Easy
+             snakeSpeed = 200;
+             resetGame(snake, dir, photoX, photoY, score); 
+             gameState = PLAYING;
+             cout<<"easy state"<<endl;
+             break;
+            case SDLK_2: // Medium
+             snakeSpeed = 150;
+             resetGame(snake, dir, photoX, photoY, score); 
+             gameState = PLAYING;
+             cout<<"medium state"<<endl;
+             break;
+             case SDLK_3: // Hard
+             snakeSpeed = 100;
+            resetGame(snake, dir, photoX, photoY, score); 
+            gameState = PLAYING;
+            cout<<"hard state"<<endl;
+             break;
+                    }
+                } 
+else if (gameState == PLAYING) {
+     switch (e.key.keysym.sym) {
+            case SDLK_ESCAPE:
+                quit = true;
+                cout<<"Game Quit"<<endl;
+                 break;
+     case SDLK_UP: if (dir != DOWN) dir = UP; break;
+     case SDLK_DOWN: if (dir != UP) dir = DOWN; break;
+     case SDLK_LEFT: if (dir != RIGHT) dir = LEFT; break;
+     case SDLK_RIGHT: if (dir != LEFT) dir = RIGHT; break;
+                    }
+                }      
+else if (gameState == GAME_OVER) {
+         if (e.key.keysym.sym == SDLK_r) {
+            cout<<"Going back to difficulty state"<<endl;
+         resetGame(snake, dir, photoX, photoY, score);
+         gameState = SELECT_DIFFICULTY;
+                } 
+    else if (e.key.keysym.sym == SDLK_c) {
+        quit = true;
+        cout<<"Game Quit"<<endl;
+         }
+             }      
+               }
+                  }
+                      }  
 
 
 
