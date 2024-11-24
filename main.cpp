@@ -217,7 +217,46 @@ else if (gameState == GAME_OVER) {
             renderText(renderer, font, "Press R to replay or C to close", SCREEN_WIDTH / 2 - 400, SCREEN_HEIGHT / 2 + 50);
             SDL_RenderPresent(renderer);
         }
-    
+else if (gameState==PLAYING){
+    Uint32 currentTime = SDL_GetTicks();
+    if(currentTime-startTime>snakeSpeed){
+        currentTime = startTime;
+        moveSnake(snake,dir);
+ // Check collision with the frog
+bool atePhoto = false;
+if (snake[0].x == photoX && snake[0].y == photoY) {
+            snake.push_back({ snake.back().x, snake.back().y });
+             generateRandomPosition(photoX, photoY);
+            atePhoto = true;
+            score++; 
+            cout << "Score: " << score << endl;
+                }
+if (checkCollisionWithSelf(snake)) {
+             cout << "Collision with own body detected! Game over." << endl;
+             gameState = GAME_OVER;
+                }
+if (checkCollisionWithWall(snake[0], SCREEN_WIDTH, SCREEN_HEIGHT)) {
+              cout << "Collision with wall detected! Game over." << endl;
+            gameState = GAME_OVER;
+                }
+  SDL_RenderClear(renderer);
+                renderTexture(renderer, backgroundTextureGame, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
+                renderSnake(renderer, snake, snakeHeadTexture); 
+                if (!atePhoto) {
+                    renderTexture(renderer, photoTexture, photoX, photoY, SNAKE_SIZE, SNAKE_SIZE);
+                }
+                renderText(renderer, font, "Score: " + to_string(score), 10, 10); 
+                SDL_RenderPresent(renderer);
+            }
+     }                
 
+    
+SDL_DestroyTexture(backgroundTextureIntro);
+    SDL_DestroyTexture(backgroundTextureGameOver);
+    SDL_DestroyTexture(backgroundTextureGame);
+    SDL_DestroyTexture(photoTexture);
+    SDL_DestroyTexture(snakeHeadTexture);
+    close(window, renderer, font, backgroundMusic);
+    return 0;
 
 }

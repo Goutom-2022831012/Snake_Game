@@ -11,10 +11,10 @@ struct snakeSegment{
     int y;
 };
 //function declaration
-void renderSnake(SDL_Renderer* renderer, vector<snakeSegment>&snake,SDL_Texture* headTexture);
-void moveSnake(vector<snakeSegment>&snake,direction dir);
-bool checkCollisionWithSelf(vector<snakeSegment>&snake);
-bool checkCollisionWithWall(snakeSegment &head,int screenWidth,int screenHight);
+void renderSnake(SDL_Renderer* renderer,const vector<snakeSegment>&snake,SDL_Texture* headTexture);
+void moveSnake(const vector<snakeSegment>&snake,direction dir);
+bool checkCollisionWithSelf(const vector<snakeSegment>&snake);
+bool checkCollisionWithWall(const snakeSegment &head,int screenWidth,int screenHight);
 
 
 

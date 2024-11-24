@@ -19,7 +19,7 @@ void moveSnake(vector<snakeSegment>&snake,direction dir){
         case RIGHT: snake[0].x+SNAKE_SIZE;break;
     }
 }
-bool checkCollisionWithSelf(vector<snakeSegment>&snake){
+bool checkCollisionWithSelf(const vector<snakeSegment>&snake){
     for(size_t i=1;i<snake.size();i++){
         if(snake[0].x == snake[i].x &&snake[0].y == snake[i].y){
             return true;
@@ -27,6 +27,6 @@ bool checkCollisionWithSelf(vector<snakeSegment>&snake){
     }
     return false;
 }
-bool  checkCollisionWithWall(snakeSegment &head,int hight,int width){
+bool  checkCollisionWithWall(const snakeSegment &head,int width,int hight){
     return (head.y>hight||head.y<0||head.x>width||head.x<0);
 }
