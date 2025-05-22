@@ -84,6 +84,28 @@ void generateRandomPosition(int &x, int &y) {
     x = (rand() % (SCREEN_WIDTH / SNAKE_SIZE)) * SNAKE_SIZE;
     y = (rand() % (SCREEN_HEIGHT / SNAKE_SIZE)) * SNAKE_SIZE;
 }
+struct Obstacle {
+    int x, y;
+};
+vector<Obstacle> obstacles; 
+void generateObstacles(vector<Obstacle> &obstacles, int count) {
+obstacles.clear();
+for (int i = 0; i < count; ++i) {
+        Obstacle newObstacle;
+        bool overlap;
+    do {
+     generateRandomPosition(newObstacle.x, newObstacle.y);
+        overlap = false;
+        for (const auto& obs : obstacles) {
+            if (obs.x == newObstacle.x && obs.y == newObstacle.y) {
+            overlap = true;break;
+                }
+            }
+              } while (overlap);
+    obstacles.push_back(newObstacle);
+    }
+}
+
 void resetGame(vector<snakeSegment>& snake, direction& dir, int& photoX, int& photoY, int& score) {
     snake.clear();
     snake.push_back({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }); 
@@ -93,6 +115,22 @@ void resetGame(vector<snakeSegment>& snake, direction& dir, int& photoX, int& ph
     dir = RIGHT;
     generateRandomPosition(photoX, photoY);
     score = 0;
+    generateObstacles(obstacles, 10);
+}
+bool checkCollisionWithObstacle(const snakeSegment &head, const vector<Obstacle> &obstacles) {
+    for (const auto &obs : obstacles) {
+        if (head.x == obs.x && head.y == obs.y) {
+            return true;
+        }
+    }
+    return false;
+}
+void renderObstacles(SDL_Renderer* renderer, const vector<Obstacle>& obstacles) {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); 
+    for (const auto& obs : obstacles) {
+        SDL_Rect obstacleRect = { obs.x, obs.y, SNAKE_SIZE, SNAKE_SIZE };
+        SDL_RenderFillRect(renderer, &obstacleRect);
+    }
 }
 int main(int argc,char* args[]){
     srand(static_cast<unsigned>(time(nullptr)));
@@ -236,9 +274,28 @@ if (checkCollisionWithWall(snake[0], SCREEN_WIDTH, SCREEN_HEIGHT)) {
               cout << "Collision with wall detected! Game over." << endl;
             gameState = GAME_OVER;
                 }
+if (checkCollisionWithObstacle(snake[0], obstacles)) {
+    cout << "Collision with obstacle detected!" << endl;
+    renderText(renderer, font, "You hit an obstacle! Press Y to continue", SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2);
+     renderText(renderer, font, " N to quit.", SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2+50);
+    SDL_RenderPresent(renderer);
+    bool validInput = false;
+    while (!validInput) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_KEYDOWN) {
+            if (e.key.keysym.sym == SDLK_y) {
+                    score = max(0, score - 1); validInput = true;  
+            } else if (e.key.keysym.sym == SDLK_n) {
+                    gameState = GAME_OVER; validInput = true; 
+                }
+            }
+        }
+    }
+}
 SDL_RenderClear(renderer);
 renderTexture(renderer, backgroundTextureGame, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
 renderSnake(renderer, snake, snakeHeadTexture); 
+renderObstacles(renderer, obstacles); 
 if (!atePhoto) {
  renderTexture(renderer, photoTexture, photoX, photoY, SNAKE_SIZE, SNAKE_SIZE);
                 }
